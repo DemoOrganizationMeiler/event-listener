@@ -1,8 +1,11 @@
 const serverless = require("serverless-http");
 const express = require("express");
+const bodyParser = require('body-parser')
 const logger = require("loglevel");
 
 const app = express();
+
+app.use(bodyParser.json())
 
 app.get("/health", (req, res, next) => {
   logger.debug("healthy");
