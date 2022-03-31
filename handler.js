@@ -8,9 +8,9 @@ app.get("/", (req, res, next) => {
   });
 });
 
-app.get("/hello", (req, res, next) => {
+app.get("/github", (req, res, next) => {
   return res.status(200).json({
-    message: "Hello from path!",
+    message: "Hello from github!",
   });
 });
 
