@@ -19,9 +19,10 @@ app.get("/health", (req, res, next) => {
 });
 
 app.post("/github", async (req, res, next) => {
+  let verifcation;
   try {
     const signature = req.headers["x-hub-signature-256"];
-    const verifcation = await webhooks.verify(req.body, signature);
+    verifcation = await webhooks.verify(req.body, signature);
   } catch (err) {
     console.error(err);
   }
