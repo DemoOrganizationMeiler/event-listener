@@ -1,7 +1,6 @@
 const serverless = require("serverless-http");
 const express = require("express");
 const bodyParser = require('body-parser')
-const logger = require("loglevel");
 
 const app = express();
 
@@ -13,14 +12,12 @@ app.get("/health", (req, res, next) => {
 });
 
 app.post("/github", (req, res, next) => {
-  logger.info("received webhook fro GitHub");
-  logger.debug(req.headers);
-  logger.debug(req.body);
-  console.log(req.body)
+  console.warn("A warning")
+  console.log("A log")
+  console.debug("A debug")
+  console.log(req.body.action)
   console.log(req.header)
-  return res.status(200).json({
-    message: "Hello from github!",
-  });
+  return res.status(200).json(req.headers);
 });
 
 app.use((req, res, next) => {
