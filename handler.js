@@ -13,6 +13,8 @@ app.post("/github", (req, res, next) => {
   logger.info("received webhook fro GitHub");
   logger.debug(req.headers);
   logger.debug(req.body);
+  console.log(req.body)
+  console.log(req.header)
   return res.status(200).json({
     message: "Hello from github!",
   });
