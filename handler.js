@@ -1,13 +1,13 @@
-import { checkRequest } from "./rules/ruleHandler";
-import { Webhooks } from "@octokit/webhooks";
-import serverless from "serverless-http";
-import { helmet } from "helmet";
-import express, { json } from "express";
+const { checkRequest } = require("./rules/ruleHandler");
+const serverless = require("serverless-http");
+const express = require("express");
+const { Webhooks } = require("@octokit/webhooks");
+const { helmet } = require("helmet");
 
 const app = express();
 
 app.use(helmet);
-app.use(json())
+app.use(express.json())
 
 const webhooks = new Webhooks({
   secret: process.env.GITHUB_WEBHOOK_SECRET,
@@ -42,4 +42,4 @@ app.use((req, res, next) => {
   });
 });
 
-export const handler = serverless(app);
+module.exports.handler = serverless(app);
