@@ -6,7 +6,7 @@ module.exports.addBranchProtection = async (repo) => {
       });
 
     try {
-        logger.debug("Adding branch protection for branch:" + repo)
+        console.log("Adding branch protection for branch:" + repo)
         await octokit.rest.repos.updateBranchProtection({
             owner: process.env.GITHUB_ORGANIZATION,
             repo: repo,
@@ -22,6 +22,6 @@ module.exports.addBranchProtection = async (repo) => {
             }
         });
     } catch (err) {
-        logger.error(err)
+        console.log(err)
     }
 }

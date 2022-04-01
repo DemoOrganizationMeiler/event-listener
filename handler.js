@@ -2,11 +2,13 @@ const { checkRequest } = require("./rules/ruleHandler");
 const serverless = require("serverless-http");
 const express = require("express");
 const { Webhooks } = require("@octokit/webhooks");
-const { helmet } = require("helmet");
+const helmet = require("helmet");
+
+
 
 const app = express();
 
-app.use(helmet);
+app.use(helmet());
 app.use(express.json())
 
 const webhooks = new Webhooks({
@@ -26,14 +28,15 @@ app.post("/github", async (req, res, next) => {
   } catch (err) {
     console.error(err);
   }
+  console.log(verifcation)
   if(!verifcation) {
     console.log("signature didn't match!")
-    res.status(401);
+    return res.status(401);
   } else {
+    console.debug("here anyway if verification is " + verifcation);
     checkRequest(req.headers["x-github-event"], req.body);
     return res.status(200);;
   }
-    
 });
 
 app.use((req, res, next) => {
