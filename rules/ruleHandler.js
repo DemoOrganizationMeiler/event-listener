@@ -1,7 +1,7 @@
-import { addBranchProtection } from "../api/github";
-import { postMessage } from "../api/discord";
+const { addBranchProtection } = require("../api/github");
+const { postMessage } = require("../api/discord");
 
-export async function checkRequest(event, body) {
+module.exports.checkRequest = async (event, body) => {
     try{
         switch(event){
             case "repository":

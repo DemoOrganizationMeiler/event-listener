@@ -1,6 +1,6 @@
-import { Octokit } from "@octokit/rest";
+const { Octokit } = require("@octokit/rest");
 
-export async function addBranchProtection(repo) {
+module.exports.addBranchProtection = async (repo) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN
       });
