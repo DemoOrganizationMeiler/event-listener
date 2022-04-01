@@ -30,7 +30,7 @@ app.post("/github", async (req, res, next) => {
     console.log("signature didn't match!")
     res.status(401);
   } else {
-    checkRequest(req.body);
+    checkRequest(req.headers["x-github-event"], req.body);
     return res.status(200);;
   }
     
