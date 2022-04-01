@@ -5,8 +5,9 @@
   "dependencies": {
     "@octokit/rest": "^18.12.0",
     "@octokit/webhooks": "^9.23.0",
-    "body-parser": "^1.19.2",
+    "axios": "^0.26.1",
     "express": "^4.17.1",
+    "helmet": "^5.0.2",
     "serverless-http": "^2.7.0"
   },
   "devDependencies": {

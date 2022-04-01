@@ -1,17 +1,17 @@
-const serverless = require("serverless-http");
-const express = require("express");
-const bodyParser = require('body-parser')
-const { Webhooks } = require("@octokit/webhooks");
-
+import { checkRequest } from "./rules/ruleHandler";
+import { Webhooks } from "@octokit/webhooks";
+import serverless from "serverless-http";
+import { helmet } from "helmet";
+import express, { json } from "express";
 
 const app = express();
+
+app.use(helmet);
+app.use(json())
 
 const webhooks = new Webhooks({
   secret: process.env.GITHUB_WEBHOOK_SECRET,
 });
-
-
-app.use(bodyParser.json())
 
 app.get("/health", (req, res, next) => {
   logger.debug("healthy");
@@ -28,9 +28,10 @@ app.post("/github", async (req, res, next) => {
   }
   if(!verifcation) {
     console.log("signature didn't match!")
-    res.send(401);
+    res.status(401);
   } else {
-    return res.status(200).json(req.headers);
+    checkRequest(req.headers["x-github-event"], req.body);
+    return res.status(200);;
   }
     
 });
@@ -41,4 +42,4 @@ app.use((req, res, next) => {
   });
 });
 
-module.exports.handler = serverless(app);
+export const handler = serverless(app);
