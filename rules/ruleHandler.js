@@ -16,6 +16,9 @@ export async function checkRequest(event, body) {
                     await postMessage("User: " + body.sender.login + " created a new branch: " + body.ref);
                 }
                 break;
+            case "pull_request_review":
+                await postMessage("PR review/comment for " + body.pull_request.title + " was submitted!")
+                break;
             default:
                 console.log("unhandled event!");
                 console.log(event);
