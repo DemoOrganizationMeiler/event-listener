@@ -1,11 +1,10 @@
-const { Octokit } = require("@octokit/rest");
-const logger = require('loglevel');
+import { Octokit } from "@octokit/rest";
 
-const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN
-  });
+export async function addBranchProtection(repo) {
+    const octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN
+      });
 
-  const addBranchProtection = async (repo) => {
     try {
         logger.debug("Adding branch protection for branch:" + repo)
         await octokit.rest.repos.updateBranchProtection({
