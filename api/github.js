@@ -1,5 +1,9 @@
 const { Octokit } = require("@octokit/rest");
 
+/*
+    Octokit dependency for calling GitHub API. 
+    This function triggers branch protection.
+*/
 module.exports.addBranchProtection = async (repo) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN
@@ -22,6 +26,7 @@ module.exports.addBranchProtection = async (repo) => {
             }
         });
     } catch (err) {
-        console.log(err)
+        console.error(err);
+        throw new Error("Setting up branch protection runs into an error. Error: " + err);
     }
 }

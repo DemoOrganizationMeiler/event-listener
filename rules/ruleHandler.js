@@ -1,31 +1,52 @@
 const { addBranchProtection } = require("../api/github");
 const { postMessage } = require("../api/discord");
 
+
+
+/*
+Ruleset for GitHub Events. 
+
+The function checks the x-github-event header to determine the behaviour.
+
+    Case: Repository
+        A repository has been created with a master branch -> Add branch protection and trigger Discord bot.
+    
+    Case: Pull Request
+        A pull request has been openend -> trigger Discord bot.
+
+    Case: Create
+        A new branch has been created -> trigger Discord bot.
+    
+    Case: default
+        Logging the unhandled event.
+
+*/
 module.exports.checkRequest = async (event, body) => {
     try{
         switch(event){
             case "repository":
                 await addBranchProtection(body.repository.name);
-                await postMessage("User: " + body.sender.login + " created the new repository: " + body.repository.name);
+                await postMessage(":octopus: **" + body.sender.login + "** created a new repository called **" + body.repository.name + "**");
                 break;
             case "pull_request":
-                await postMessage("User: " + body.pull_request.user.login + " created a new PR!");
+                await postMessage(":octopus: **" + body.sender.login + "** created a new PR! :octopus:");
                 break;
             case "create":
                 if(body.ref_type === "branch") {
-                    await postMessage("User: " + body.sender.login + " created a new branch: " + body.ref);
+                    await postMessage(":octopus: **" + body.sender.login + "** created a new branch  **" + body.ref +"** :octopus:");
                 }
                 break;
             case "pull_request_review":
-                await postMessage("PR review/comment for " + body.pull_request.title + " was submitted!")
+                await postMessage("PR review/comment for **" + body.pull_request.title + "** was submitted! :octopus:")
                 break;
             default:
-                console.log("unhandled event!");
+                console.warn("unhandled event:");
                 console.log(event);
                 break;
         }
     } catch(err) {
-        console.log(err);
+        console.error(err);
+        throw new Error("Request checking runs into error:" + err);
     }
 }
 
