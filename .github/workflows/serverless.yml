@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: 12.x
       - run: npm ci
+      - run: npm test
       - name: serverless deploy
         uses: serverless/github-action@v3
         with:
