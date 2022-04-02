@@ -29,7 +29,9 @@ module.exports.checkRequest = async (event, body) => {
                 await postMessage(":octopus: **" + body.sender.login + "** created a new repository called **" + body.repository.name + "**");
                 break;
             case "pull_request":
-                await postMessage(":octopus: **" + body.sender.login + "** created a new PR! :octopus:");
+                if(body.action === "opened" || "closed") {
+                    await postMessage(":octopus: **" + body.sender.login + "** **" + body.action + "** a PR! :octopus:");
+                }
                 break;
             case "create":
                 if(body.ref_type === "branch") {
