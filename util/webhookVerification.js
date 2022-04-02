@@ -1,9 +1,11 @@
 const { Webhooks } = require("@octokit/webhooks");
 
+const gitHubSecret = process.env.GITHUB_WEBHOOK_SECRET || "secret";
+
 // Initializing Webhooks API with custom GitHub Secret to authenticate webhooks.
 const webhooks = new Webhooks({
     // Environment variable stored in AWS Lambda.
-    secret: process.env.GITHUB_WEBHOOK_SECRET,
+    secret: gitHubSecret
   });
   
 // Function returns true if GitHub Request Digest matches calculated digest from GITHUB_WEBHOOK_SECRET
