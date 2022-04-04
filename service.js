@@ -4,6 +4,8 @@ const serverless = require("serverless-http");
 const express = require("express");
 const helmet = require("helmet");
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 // Use middleware for parsing security headers and json parsing.
@@ -45,6 +47,6 @@ module.exports.handler = () => {
     serverless(app);
 }
 module.exports.listen = () =>{
-    app.listen(3000, () =>{
-  console.log("test");
+    app.listen(port, () =>{
+  console.log("Listening on port " + port);
 })}
