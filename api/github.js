@@ -31,7 +31,7 @@ module.exports.addBranchProtection = async (repo) => {
             owner: process.env.GITHUB_ORGANIZATION,
             repo: repo,
             title: "Branch protection was activated for " + repo,
-            body: "@" + process.env.GIT_OWNER + "new repository was created"
+            body: "@" + process.env.GIT_OWNER + " new repository was created"
           });
 
 
