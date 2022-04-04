@@ -25,6 +25,16 @@ module.exports.addBranchProtection = async (repo) => {
                 teams: []
             }
         });
+
+        // Creating and Issue and notifying me.
+        await octokit.rest.issues.create({
+            owner: process.env.GITHUB_ORGANIZATION,
+            repo: repo,
+            title: "Branch protection was activated for " + repo,
+            body: "@" + process.env.GIT_OWNER + "new repository was created"
+          });
+
+
     } catch (err) {
         console.error(err);
         throw new Error("Setting up branch protection runs into an error. Error: " + err);
