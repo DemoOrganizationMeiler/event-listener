@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  github_hook:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DEFAULT_BRANCH_NAME=<MASTER BRANCH>
+      - DISCORD_URL=<DISCORD URL>
+      - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
+      - GITHUB_TOKEN=<SECRET TOKEN>
+      - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
