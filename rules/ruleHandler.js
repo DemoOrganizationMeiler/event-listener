@@ -1,5 +1,4 @@
 const { addBranchProtection } = require("../api/github");
-const { postMessage } = require("../api/discord");
 
 
 
@@ -21,31 +20,36 @@ The function checks the x-github-event header to determine the behaviour.
         Logging the unhandled event.
 
 */
-module.exports.checkRequest = async (event, body) => {
+module.exports.checkRequest = async (event, body, callback) => {
+    let message;
     try{
         switch(event){
             case "repository":
                 await addBranchProtection(body.repository.name);
-                await postMessage(":octopus: **" + body.sender.login + "** created a new repository called **" + body.repository.name + "**");
+                message = ":octopus: **" + body.sender.login + "** created a new repository called **" + body.repository.name + "**";
                 break;
             case "pull_request":
                 if(body.action === "opened" || "closed") {
-                    await postMessage(":octopus: **" + body.sender.login + "** **" + body.action + "** a PR! :octopus:");
+                    message = ":octopus: **" + body.sender.login + "** **" + body.action + "** a PR! :octopus:";
                 }
                 break;
             case "create":
                 if(body.ref_type === "branch") {
-                    await postMessage(":octopus: **" + body.sender.login + "** created a new branch  **" + body.ref +"** :octopus:");
+                    message = ":octopus: **" + body.sender.login + "** created a new branch  **" + body.ref +"** :octopus:";
                 }
                 break;
             case "pull_request_review":
-                await postMessage("PR review/comment for **" + body.pull_request.title + "** was submitted! :octopus:")
+                message = "PR review/comment for **" + body.pull_request.title + "** was submitted! :octopus:";
                 break;
             default:
-                console.warn("unhandled event:");
+                console.warn("unhadnled event");
                 console.log(event);
                 break;
         }
+        if(message && process.env.DISCORD_URL) {
+            await callback(message)
+        }
+
     } catch(err) {
         console.error(err);
         throw new Error("Request checking runs into error:" + err);
