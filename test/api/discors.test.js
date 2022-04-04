@@ -4,6 +4,11 @@ const axios = require("axios");
 jest.mock("axios");
 
 describe('postMessage', () => {
+
+    beforeEach(() =>{
+        jest.resetModules();
+    })
+    
     it('Successfully When posting to Discord', async () => {
         const response = {
             status: 201

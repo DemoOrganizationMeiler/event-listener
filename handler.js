@@ -1,4 +1,5 @@
 const { checkRequest } = require("./rules/ruleHandler");
+const { postMessage } = require("./api/discord") 
 const { verifyWebhookRequest } = require("./util/webhookVerification");
 const serverless = require("serverless-http");
 const express = require("express");
@@ -27,7 +28,7 @@ app.post("/github", async (req, res, next) => {
     if(!verifcation) {
       return res.status(401);
     } else {
-      checkRequest(req.headers["x-github-event"], req.body);
+      checkRequest(req.headers["x-github-event"], req.body, postMessage);
       return res.status(200);;
     }
   }catch(err){
