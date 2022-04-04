@@ -11,17 +11,16 @@ WORKDIR /github
 RUN chmod a+rwx /github
 
 COPY --chown=github package.json ./package.json
+RUN npm install
+
 COPY --chown=github api ./api
 COPY --chown=github rules ./rules
 COPY --chown=github util ./util
-COPY --chown=github service.js ./service.js
-COPY --chown=github handler.alt.js ./handler.js
-
+COPY --chown=github handler.js ./handler.js
+COPY --chown=github handler.alt.js handler.alt.js
 
 USER github
 
-RUN npm install
-
-CMD ["node","handler.js"]
+CMD ["node","handler.alt.js"]
 
 

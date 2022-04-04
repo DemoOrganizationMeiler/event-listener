@@ -1,3 +1,3 @@
-const {listen} = require("./service");
+const {listen} = require("./handler");
 
 listen();
