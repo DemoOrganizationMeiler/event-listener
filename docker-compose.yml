@@ -5,8 +5,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DEFAULT_BRANCH_NAME=master
-      - DISCORD_URL=https://discord.com/api/webhooks/959449594369024020/turnHXMq0MQHFKqKCD0qbcGNVu_16HFXUj92zq7Q79xPtTXKAfq4e2W2ecFDYBMiHkFB
-      - GITHUB_ORGANIZATION=DemoOrganizationMeiler
-      - GITHUB_TOKEN=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
-      - GITHUB_WEBHOOK_SECRET=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 
+      - DEFAULT_BRANCH_NAME=<MASTER BRANCH>
+      - DISCORD_URL=<DISCORD URL>
+      - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
+      - GITHUB_TOKEN=<SECRET TOKEN>
+      - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
