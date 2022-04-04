@@ -48,6 +48,8 @@ Open the ``docker-compose.yml`` and enter the needed environment variables:
       - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
       - GITHUB_TOKEN=<SECRET TOKEN>
       - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
+      - GIT_OWNER=<GITHUB ADMIN>
+
 ```
 
 In the next step run 
@@ -70,6 +72,8 @@ Set the following environment variables according to https://www.serverless.com/
       - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
       - GITHUB_TOKEN=<SECRET TOKEN>
       - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
+      - GIT_OWNER=<GITHUB ADMIN>
+
 ```
 
 Enter Cloud provider according to Serverless instructions: https://www.serverless.com/framework/docs/providers/
