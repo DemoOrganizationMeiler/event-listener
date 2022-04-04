@@ -1,36 +1,97 @@
 <!--
-title: 'Serverless Framework Node Express API on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Node Express API running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v2
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
+title: 'GitHub Workflow Automation Tool'
+description: 'This Tool provides basic GitHub workflow automation to send Discord notifications and add "master"/"main" branch protection.'
 -->
 
-# Serverless Framework Node Express API on AWS
+# Installation Requirements
 
-This template demonstrates how to develop and deploy a simple Node Express API service running on AWS Lambda using the traditional Serverless Framework.
+There are two alternatives to run this tool. 
 
-## Anatomy of the template
+1. Docker
+2. Serverless
 
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to the `httpApi` event. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the event is configured in a way to accept all incoming requests, `express` framework is responsible for routing and handling requests internally. Implementation takes advantage of `serverless-http` package, which allows you to wrap existing `express` applications. To learn more about `serverless-http`, please refer to corresponding [GitHub repository](https://github.com/dougmoscrop/serverless-http).
+### Docker
+
+Docker has to be installed:
+https://www.docker.com/get-started/
+
+### Serverless
+
+Serverless has to be installed. Instructions are here: https://www.serverless.com/framework/docs/getting-started
+
+Keys for the Cloud provider have to be added to the serverless yml file
+
+HOWEVER!
+
+This step can be skipped, since Serverless can be run locally. 
+Attention: Environment variables have to be set. Please find instructions here: https://www.serverless.com/plugins/serverless-offline#environment-variables
 
 ## Usage
 
-### Deployment
+In any case the GitHub repo has to be checked out
 
-Install dependencies with:
+### Note
+
+If the Discord URL is removed, notification are not sent
+
+### Deployment - Docker Way
+
+
+The most convenient way is to use the ``docker-compose.yml``:
+
+Open the ``docker-compose.yml`` and enter the needed environment variables:
+
 
 ```
-npm install
+      - DEFAULT_BRANCH_NAME=<MASTER BRANCH>
+      - DISCORD_URL=<DISCORD URL>
+      - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
+      - GITHUB_TOKEN=<SECRET TOKEN>
+      - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
 ```
 
-and then deploy with:
+In the next step run 
 
+```
+docker-compose -f docker-compose.yml up -d --build
+```
+
+The service is then reachable under  ``https://localhos:3000``
+
+
+### Deployment - Serverless Way
+
+
+Set the following environment variables according to https://www.serverless.com/framework/docs/getting-started
+
+```
+      - DEFAULT_BRANCH_NAME=<MASTER BRANCH>
+      - DISCORD_URL=<DISCORD URL>
+      - GITHUB_ORGANIZATION=<ORANIZTATION NAME>
+      - GITHUB_TOKEN=<SECRET TOKEN>
+      - GITHUB_WEBHOOK_SECRET=<WEBHOOK TOKEN>
+```
+
+Enter Cloud provider according to Serverless instructions: https://www.serverless.com/framework/docs/providers/
+
+To deploy serverless to AWS Lambda or Cloud Provider use:
+
+Use provider template:
+```
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  region: eu-central-1
+```
+
+Set up your provider keys and secret on your machine:
+
+```
+serverless config credentials --provider aws --key <key> --secret <secret> -o
+```
+
+and then you are good to go. Run:
 ```
 serverless deploy
 ```
@@ -68,60 +129,17 @@ layers:
   None
 ```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/).
 
 ### Invocation
 
 After successful deployment, you can call the created application via HTTP:
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
+```
+curl -v https://xxxxxxx.execute-api.us-east-1.amazonaws.com/health
 ```
 
-Which should result in the following response:
+Which should result in the following response code: 20x
 
-```
-{"message":"Hello from root!"}
-```
 
-Calling the `/hello` path with:
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/hello
-```
-
-Should result in the following response:
-
-```bash
-{"message":"Hello from path!"}
-```
-
-If you try to invoke a path or method that does not have a configured handler, e.g. with:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/nonexistent
-```
-
-You should receive the following response:
-
-```bash
-{"error":"Not Found"}
-```
-
-### Local development
-
-It is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
-
-```bash
-serverless plugin install -n serverless-offline
-```
-
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
-
-After installation, you can start local emulation with:
-
-```
-serverless offline
-```
-
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
+Calling the `/GitHub` path will trigger the workflow. However it is important to use the correct Webhook secret as authentication will fail otherwise.
